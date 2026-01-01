@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { Firestore, collection, addDoc } from '@angular/fire/firestore';
+import { Form as FormService } from './service/form'; 
+ import { Student } from './interface';
 
 @Component({
   selector: 'app-form',
@@ -9,9 +10,9 @@ import { Firestore, collection, addDoc } from '@angular/fire/firestore';
   templateUrl: './form.html',
   styleUrl: './form.css'
 })
-export class Form {
-  private firestore = inject(Firestore);
+export class Form { 
   private fb = inject(FormBuilder);
+  private formService = inject(FormService); 
 
   isLoading = signal(false);
   statusMessage = signal('');
@@ -25,13 +26,17 @@ export class Form {
   async addStudent() {
     if (this.studentForm.valid) {
       this.isLoading.set(true);
+      this.statusMessage.set('');
+
+      
+      const newStudent = this.studentForm.getRawValue() as Student;
+
       try {
-        const studentRef = collection(this.firestore, 'students');
-        await addDoc(studentRef, this.studentForm.value);
-        
+        await this.formService.createStudent(newStudent);
         this.statusMessage.set('Student added successfully! ✅');
         this.studentForm.reset();
       } catch (error) {
+        console.error("Firebase Error:", error);
         this.statusMessage.set('Error adding student. ❌');
       } finally {
         this.isLoading.set(false);
