@@ -1,16 +1,18 @@
-<div class="form-container" style="padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+<div class="form-container" style="padding: 20px; border: 1px solid #ddd; border-radius: 8px; max-width: 400px; margin: auto;">
   <h3>Add New Student</h3>
   <form [formGroup]="studentForm" (ngSubmit)="addStudent()">
-    <input type="text" formControlName="name" placeholder="Student Name"><br><br>
-    <input type="text" formControlName="rollNo" placeholder="Roll Number"><br><br>
-    <input type="text" formControlName="course" placeholder="Course Name"><br><br>
+    <input type="text" formControlName="name" placeholder="Student Name" style="width: 100%; margin-bottom: 10px;"><br>
+    <input type="text" formControlName="rollNo" placeholder="Roll Number" style="width: 100%; margin-bottom: 10px;"><br>
+    <input type="text" formControlName="course" placeholder="Course Name" style="width: 100%; margin-bottom: 10px;"><br>
     
-    <button type="submit" [disabled]="studentForm.invalid || isLoading()">
+    <button type="submit" [disabled]="studentForm.invalid || isLoading()" style="padding: 10px 20px; cursor: pointer;">
       @if (isLoading()) { Saving... } @else { Submit }
     </button>
   </form>
 
   @if (statusMessage()) {
-    <p>{{ statusMessage() }}</p>
+    <p [style.color]="statusMessage().includes('Error') ? 'red' : 'green'" style="margin-top: 15px;">
+      {{ statusMessage() }}
+    </p>
   }
 </div>
