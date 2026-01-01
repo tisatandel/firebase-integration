@@ -1,0 +1,16 @@
+<div class="form-container" style="padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+  <h3>Add New Student</h3>
+  <form [formGroup]="studentForm" (ngSubmit)="addStudent()">
+    <input type="text" formControlName="name" placeholder="Student Name"><br><br>
+    <input type="text" formControlName="rollNo" placeholder="Roll Number"><br><br>
+    <input type="text" formControlName="course" placeholder="Course Name"><br><br>
+    
+    <button type="submit" [disabled]="studentForm.invalid || isLoading()">
+      @if (isLoading()) { Saving... } @else { Submit }
+    </button>
+  </form>
+
+  @if (statusMessage()) {
+    <p>{{ statusMessage() }}</p>
+  }
+</div>
